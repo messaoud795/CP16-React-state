@@ -1,0 +1,5 @@
+.App {
+padding: 5%;}
+#showAndHide{font-size: 20px;border-radius: 10px;padding: 10px 15px 10px 15px;}
+#showAndHide:hover{background-color: cadetblue;color: white;}
+
