@@ -1,27 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Component } from "react";
 import "./App.css";
 import Profile from "./profile/Profile";
 import pic from "./pic.jpg";
 
-function App() {
+class App extends Component {
+  // get the state : Boolean show
+  constructor(props) {
+    super(props);
+    this.state = { show: true };
+  }
+  // function to toggle show boolean and the button text
+  showProfile=() =>{
+    
+   this.state.show? this.setState({ show:false}):
+   this.setState({ show:true}) ;
+    var c = document.getElementById("showAndHide");
+    this.state.show
+      ? (c.innerHTML = "show profile")
+      : (c.innerHTML = "hide profile");
+  }
 
-// get the state : Boolean show and function set visibilty
-const[show, setvisibily]=useState(true);
-
-// function to toggle show boolean and the button text
-function showProfile() {
-  setvisibily(!show);
-var c=document.getElementById("showAndHide");
-show?c.innerHTML="show profile":c.innerHTML="hide profile";
-}
-
-// declare a function to alert with the name 
-  const setAlert = (name) => {
+  // declare a function to alert with the name
+  setAlert = (name) => {
     alert(name);
   };
 
-  // declare an object user 
-  const user = {
+  // declare an object user
+  user = {
     fullName: "Jonny Kim",
     profession: "(M.D.) (Lieutenant, U.S. Navy) NASA Astronaut",
     bio:
@@ -29,26 +34,43 @@ show?c.innerHTML="show profile":c.innerHTML="hide profile";
   };
 
   //display the time when the profile component is mounted
-  useEffect(()=>{
-       var p=document.getElementById("showTime");
-  var  time= new Date().toLocaleTimeString();
-   show?p.innerHTML="The time when this profile was showed  "+time:p.innerHTML='';
-  })
+  componentDidMount(){
+    var p = document.getElementById("showTime");
+    var time = new Date().toLocaleTimeString();
+      (p.innerHTML = "The time when this profile was showed  " + time)
+  }
 
-  return (
-    <div className="App">
-      {/* buttun to show and hide profile component */}
-      <button id="showAndHide" onClick={showProfile} >hide profile</button>
+  //display the time when the profile component is mounted again
+  componentDidUpdate(){
+    var p = document.getElementById("showTime");
+    var time = new Date().toLocaleTimeString();
+    this.state.show
+      ? (p.innerHTML = "The time when this profile was showed  " + time)
+      : (p.innerHTML = "");
+  }
 
-      {/* use of profile component with props, handleName as function and image as props children */}
-      <div>{show && <Profile user={user} handleName={setAlert}>
-        <img src={pic} alt="" /></Profile> }
+  render() {
+    return (
+      <div className="App">
+        {/* buttun to show and hide profile component */}
+        <button id="showAndHide" onClick={this.showProfile}>
+          hide profile
+        </button>
+
+        {/* use of profile component with props, handleName as function and image as props children */}
+        <div>
+          {this.state.show && (
+            <Profile user={this.user} handleName={this.setAlert}>
+              <img src={pic} alt="" />
+            </Profile>
+          )}
         </div>
-        
+
         {/* display time */}
         <p id="showTime"></p>
-    </div>
-  );
+      </div>
+    );
   }
+}
 
 export default App;
